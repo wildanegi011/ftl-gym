@@ -16,3 +16,13 @@ export function getRedirectUrl() {
   }
   return 'https://ftl-gym.netlify.app/auth/callback'
 }
+
+export function getRedirectPage(path: string) {
+  if (typeof window !== 'undefined') {
+    const origin = window.location.origin
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return `${origin}${path}`
+    }
+  }
+  return `https://ftl-gym.netlify.app${path}`
+}

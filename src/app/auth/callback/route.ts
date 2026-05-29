@@ -8,6 +8,11 @@ export async function GET(request: Request) {
   // if "next" is in param, use it as the redirect path after auth
   const next = searchParams.get('next') ?? '/'
 
+  // Enforce stable origin in production to prevent leaking to Netlify dynamic preview subdomains
+  const stableOrigin = origin.includes('localhost') || origin.includes('127.0.0.1')
+    ? origin
+    : 'https://ftl-gym.netlify.app'
+
   if (code) {
     const supabase = await createClient()
     const { error, data } = await supabase.auth.exchangeCodeForSession(code)
@@ -39,7 +44,7 @@ export async function GET(request: Request) {
 
       if (!isComplete) {
         console.log("AUTH CALLBACK - Redirecting to /register")
-        return NextResponse.redirect(`${origin}/register`)
+        return NextResponse.redirect(`${stableOrigin}/register`)
       }
 
       const dashboardPath = role === 'admin' ? '/admin' : `/${role}/dashboard`
@@ -47,12 +52,12 @@ export async function GET(request: Request) {
       console.log("AUTH CALLBACK - Redirecting to dashboard:", dashboardPath)
       // If "next" was provided and they are fully registered, use it, otherwise dashboard
       if (next !== '/') {
-        return NextResponse.redirect(`${origin}${next}`)
+        return NextResponse.redirect(`${stableOrigin}${next}`)
       }
-      return NextResponse.redirect(`${origin}${dashboardPath}`)
+      return NextResponse.redirect(`${stableOrigin}${dashboardPath}`)
     }
   }
 
   // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/login?error=oauth_failed`)
+  return NextResponse.redirect(`${stableOrigin}/login?error=oauth_failed`)
 }

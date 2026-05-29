@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Check, Sparkles, Loader2 } from "lucide-react"
-import { createClient, getRedirectUrl } from "@/lib/supabase/client"
+import { createClient, getRedirectUrl, getRedirectPage } from "@/lib/supabase/client"
 
 const memberships = [
   {
@@ -50,7 +50,7 @@ export function PricingSection() {
       const params = new URLSearchParams()
       params.set("membership_type", membershipType)
       params.set("interval", billingInterval)
-      window.location.href = `/register?${params.toString()}`
+      window.location.href = getRedirectPage(`/register?${params.toString()}`)
       return
     }
 

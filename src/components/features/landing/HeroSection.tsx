@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Play, Sparkles, Dumbbell, Activity, HeartPulse, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
+import { createClient, getRedirectUrl } from "@/lib/supabase/client"
 
 export function HeroSection() {
   const [positions, setPositions] = useState([
@@ -22,7 +22,7 @@ export function HeroSection() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: getRedirectUrl(),
         queryParams: {
           prompt: 'select_account',
         },

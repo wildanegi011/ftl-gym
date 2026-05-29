@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Check, Sparkles, Loader2 } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { createClient, getRedirectUrl } from "@/lib/supabase/client"
 
 const memberships = [
   {
@@ -58,7 +58,7 @@ export function PricingSection() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: getRedirectUrl(),
         queryParams: { prompt: 'select_account' },
       },
     })

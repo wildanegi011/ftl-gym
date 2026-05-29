@@ -100,7 +100,10 @@ export async function POST(req: NextRequest) {
       `
 
       // 3. Create Xendit Invoice
-      const redirectUrl = `${req.nextUrl.origin}/member/subscription`
+      const stableOrigin = req.nextUrl.origin.includes('localhost') || req.nextUrl.origin.includes('127.0.0.1')
+        ? req.nextUrl.origin
+        : 'https://ftl-gym.netlify.app'
+      const redirectUrl = `${stableOrigin}/member/subscription`
       const invoice = await createXenditInvoice({
         externalId,
         amount: price,

@@ -283,7 +283,7 @@ export async function completeRegistration(data: { membership_type: string, pt_i
       payerEmail: user.email || '',
       customerName: data.full_name,
       customerPhone: data.phone,
-      successRedirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/member/dashboard?payment_success=true`,
+      successRedirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ftl-gym.netlify.app'}/member/dashboard?payment_success=true`,
     })
   } catch (err: any) {
     console.error('Xendit creation error:', err)
